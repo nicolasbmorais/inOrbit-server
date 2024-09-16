@@ -34,9 +34,8 @@ export async function createGoalCompletion({
     .with(goalCompletionCount)
     .select({
       desiredWeeklyFrequency: goals.desiredWeeklyFrequency,
-      createdAt: goals.createdAt,
       completionCount: sql/*sql*/ `
-      COALESCE(${goalCompletionCount.completionCount},0)
+        COALESCE(${goalCompletionCount.completionCount}, 0)
       `.mapWith(Number),
     })
     .from(goals)
@@ -52,11 +51,8 @@ export async function createGoalCompletion({
 
   const insertResult = await db
     .insert(goalCompletions)
-    .values({
-      goalId,
-    })
+    .values({ goalId })
     .returning();
-
   const goalCompletion = insertResult[0];
 
   return {
